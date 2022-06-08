@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var analysisRouter = require('./routes/analysis');
 require('dotenv').config({ path: require('find-config')('.env') })
 const cors = require('cors');
 var app = express();
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/analysis', analysisRouter);
 
 
 // catch 404 and forward to error handler

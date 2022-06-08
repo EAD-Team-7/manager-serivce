@@ -15,15 +15,6 @@ var auth0 = new ManagementClient({
 });
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
-
-    // var users = await prisma.user.findMany();
-    // // Pagination settings.
-    // var params = {
-    //     search_engine: 'v3',
-    //     per_page: 10,
-    //     page: 0
-    // };
-    console.log(req.query.role);
     if (req.query.role) {
         auth0Users = await auth0.getUsersInRole({ id: req.query.role });
         var allUsers = await auth0.getUsers();
