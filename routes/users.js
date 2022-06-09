@@ -15,7 +15,7 @@ var auth0 = new ManagementClient({
     clientSecret: AUTH0_CLIENT_SECRET,
 });
 const apiUrl =
-    process.env.STOCKIST_API+"/analysis" || "http://localhost:8000/api/analysis";
+    process.env.STOCKIST_API || "http://localhost:8000/api";
   
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
@@ -70,22 +70,6 @@ router.post("/", async (req, res, next) => {
     })
 });
 
-router.post("/", async (req, res, next) => {
-    var userCreated = await auth0.createUser({
-        email: req.body.email,
-        password: req.body.password,
-        connection: 'Username-Password-Authentication',
-    });
-    if (req.body.role) {
-        const response = await auth0.assignRolestoUser({ id: userCreated.user_id }, { "roles": [req.body.role] });
-    }
-    if (userCreated) {
-        res.json({ "message": "User created" });
-    }
-    else {
-        res.json({ "message": "Generation error" });
-    }
-});
 
 router.delete("/:id", async (req, res, next) => {
     var deletedUser = await auth0.deleteUser({ id : req.params.id });
