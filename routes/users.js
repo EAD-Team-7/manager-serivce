@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var ManagementClient = require('auth0').ManagementClient;
+var axios = require("axios");
 
 
 const { PrismaClient } = require('@prisma/client')
@@ -13,6 +14,9 @@ var auth0 = new ManagementClient({
     clientId: AUTH0_CLIENT_ID,
     clientSecret: AUTH0_CLIENT_SECRET,
 });
+const apiUrl =
+    process.env.STOCKIST_API+"/analysis" || "http://localhost:8000/api/analysis";
+  
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
     if (req.query.role) {
@@ -56,12 +60,14 @@ router.post("/", async (req, res, next) => {
     if (req.body.role) {
         const response = await auth0.assignRolestoUser({ id: userCreated.user_id }, { "roles": [req.body.role] });
     }
-    if (userCreated) {
+    axios.post(apiUrl+"/user",{
+        username : req.body.email.split("@")[0],
+        password : req.body.password,
+    }).then( r => {
         res.json({ "message": "User created" });
-    }
-    else {
+    }).catch( err => {
         res.json({ "message": "Generation error" });
-    }
+    })
 });
 
 router.post("/", async (req, res, next) => {

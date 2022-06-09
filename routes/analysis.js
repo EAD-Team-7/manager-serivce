@@ -5,7 +5,7 @@ var axios = require("axios");
 router.get("/", function (req, res, next) {
   // http://localhost:8000/api/analysis?from_date=2022-02-01&to_date=2022-05-01
   const apiUrl =
-    process.env.STOCKIST_API || "http://localhost:8000/api/analysis";
+    process.env.STOCKIST_API+"/analysis" || "http://localhost:8000/api/analysis";
   axios
     .get(apiUrl, {
       params: {
